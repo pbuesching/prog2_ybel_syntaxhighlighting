@@ -17,13 +17,27 @@ public final class MiniJavaTokens {
   // defined by a regular expression and a colour. Optionally, a specific capturing group within the
   // pattern can be selected as the "highlighted" region.
   public static List<Token> defaultTokens() {
-    return List.of(
-        // Example: string literals (students should define further tokens below)
-        Token.of(Pattern.compile("\"([^\"\\\\]|\\\\.)*\""), MiniJavaColours.STRING_LITERAL_COLOUR),
+      return List.of(
         //Javadoc Comments:
-        Token.of(Pattern.compile(""), MiniJavaColours.JAVADOC_COMMENT_COLOUR)
-        // TODO: Define additional tokens for MiniJava, e.g. character literals, keywords,
-        // annotations, comments, identifiers, numbers, operators, etc.
+        Token.of(Pattern.compile("/\\*\\*[\\s\\S]*?\\*/"), MiniJavaColours.JAVADOC_COMMENT_COLOUR),
+        //Block Comments:
+        Token.of(Pattern.compile("/\\*[\\s\\S]*?\\*/"), MiniJavaColours.BLOCK_COMMENT_COLOUR),
+        //Oneline Comments
+        Token.of(Pattern.compile("/{2}[^\\n\\r]*"), MiniJavaColours.LINE_COMMENT_COLOUR),
+        //Escaping operations
+        Token.of(Pattern.compile("\\\\[\\\\\"\'ntbrf]"), MiniJavaColours.ESCAPE_SEQUENCE_COLOUR),
+        //Strings
+        Token.of(Pattern.compile("\"([^\"\\\\]|\\\\.)*\""), MiniJavaColours.STRING_LITERAL_COLOUR),
+        //Chars
+        Token.of(Pattern.compile("'(.|(\\\\[\\\\\"\'ntbrf]))'"), MiniJavaColours.CHAR_LITERAL_COLOUR),
+        //Annotattionen
+        Token.of(Pattern.compile("@[\\S\\D][\\w]*"), MiniJavaColours.ANNOTATION_COLOUR),
+        //Keywords (package, import, class, public, private, final, return, null, new)
+        Token.of(Pattern.compile("\\b(package|import|class|public|private|final|return|null|new)\\b"), MiniJavaColours.KEYWORD_COLOUR),
+        //Methoden
+        Token.of(Pattern.compile("[\\D\\S][\\S]*(\\(([\\s\\S]*)?\\))"), MiniJavaColours.METHODE_COLOUR),
+        // Strukturen wie if, else, while...
+        Token.of(Pattern.compile("\\b((if|else|while|for|switch)(\\b|(?=\\s?\\()))|(case\\b)"), MiniJavaColours.STRUCTURES_COLOUR)
         );
   }
 }
