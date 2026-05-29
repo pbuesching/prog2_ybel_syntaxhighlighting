@@ -35,7 +35,7 @@ public final class MiniJavaTokens {
         //Keywords (package, import, class, public, private, final, return, null, new)
         Token.of(Pattern.compile("\\b(package|import|class|public|private|final|return|null|new)\\b"), MiniJavaColours.KEYWORD_COLOUR),
         //Methoden
-        Token.of(Pattern.compile("[\\D\\S][\\S]*(\\(([\\s\\S]*)?\\))"), MiniJavaColours.METHODE_COLOUR),
+        Token.of(Pattern.compile("[a-zA-Z_$][^()\\s]*\\s*?(?=\\()"), MiniJavaColours.METHODE_COLOUR),
         // Strukturen wie if, else, while...
         Token.of(Pattern.compile("\\b((if|else|while|for|switch)(\\b|(?=\\s?\\()))|(case\\b)"), MiniJavaColours.STRUCTURES_COLOUR)
         );
