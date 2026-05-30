@@ -10,7 +10,7 @@ public final class MiniJavaColours {
   public static final Color LINE_COMMENT_COLOUR = new Color(0, 128, 0);
   public static final Color BLOCK_COMMENT_COLOUR = new Color(0, 160, 0);
   public static final Color JAVADOC_COMMENT_COLOUR = new Color(0, 160, 128);
-  public static final Color ESCAPE_SEQUENCE_COLOUR = new Color(120,0,0);
-  public static final Color METHODE_COLOUR = new Color(255,255,0);
-  public static final Color STRUCTURES_COLOUR = new Color(90,180,255);
+  public static final Color ESCAPE_SEQUENCE_COLOUR = new Color(120, 0, 0);
+  public static final Color METHODE_COLOUR = new Color(255, 255, 0);
+  public static final Color STRUCTURES_COLOUR = new Color(90, 180, 255);
 }
