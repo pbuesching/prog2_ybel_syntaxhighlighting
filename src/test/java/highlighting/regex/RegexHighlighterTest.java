@@ -4,185 +4,181 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.*;
 
 import highlighting.core.HighlightRegion;
-import highlighting.core.SyntaxHighlighter;
 import highlighting.presets.MiniJavaColours;
-import highlighting.regex.Token;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class RegexHighlighterTest {
 
-    RegexHighlighter regHigh;
+  RegexHighlighter regHigh;
 
-    @BeforeEach
-    public void setUp() {
-        regHigh = new RegexHighlighter();
-    }
+  @BeforeEach
+  public void setUp() {
+    regHigh = new RegexHighlighter();
+  }
 
-    /* Tests for the collectMatches Method */
+  /* Tests for the collectMatches Method */
 
-    @Test
-    public void test_collectMatches_find_overlapping() {
-        //given
-        String testString = "/* public testclass */ 'a' \"String methode() \"";
+  @Test
+  public void test_collectMatches_find_overlapping() {
+    // given
+    String testString = "/* public testclass */ 'a' \"String methode() \"";
 
-        //when
-        var result = regHigh.collectMatches(testString);
+    // when
+    var result = regHigh.collectMatches(testString);
 
-        //then
-        assertEquals(5, result.size());
-    }
+    // then
+    assertEquals(5, result.size());
+  }
 
-    @Test
-    public void test_collectMatches_find_no_overlapping() {
-        //given
-        String testString = "public \\n class";
+  @Test
+  public void test_collectMatches_find_no_overlapping() {
+    // given
+    String testString = "public \\n class";
 
-        //when
-        var result = regHigh.collectMatches(testString);
+    // when
+    var result = regHigh.collectMatches(testString);
 
-        //then
-        assertEquals(3, result.size());
-    }
+    // then
+    assertEquals(3, result.size());
+  }
 
-    @Test
-    public void test_collectMatches_find_none() {
-        //given
-        String testString = "abcd";
+  @Test
+  public void test_collectMatches_find_none() {
+    // given
+    String testString = "abcd";
 
-        //when
-        var result = regHigh.collectMatches(testString);
+    // when
+    var result = regHigh.collectMatches(testString);
 
-        //them
-        assertEquals(0, result.size());
-    }
+    // them
+    assertEquals(0, result.size());
+  }
 
-    /* Tests for the resolveConflicts() Methods */
+  /* Tests for the resolveConflicts() Methods */
 
-    @Test
-    public void test_resolveConflicts_no_conflicts() {
-        //given
-        List<HighlightRegion> testRegions = new ArrayList<>();
-        testRegions.add(new HighlightRegion(0, 5, MiniJavaColours.BLOCK_COMMENT_COLOUR));
-        testRegions.add(new HighlightRegion(8, 13, MiniJavaColours.METHODE_COLOUR));
-        testRegions.add(new HighlightRegion(15, 20, MiniJavaColours.STRING_LITERAL_COLOUR));
+  @Test
+  public void test_resolveConflicts_no_conflicts() {
+    // given
+    List<HighlightRegion> testRegions = new ArrayList<>();
+    testRegions.add(new HighlightRegion(0, 5, MiniJavaColours.BLOCK_COMMENT_COLOUR));
+    testRegions.add(new HighlightRegion(8, 13, MiniJavaColours.METHODE_COLOUR));
+    testRegions.add(new HighlightRegion(15, 20, MiniJavaColours.STRING_LITERAL_COLOUR));
 
-        //when
-        var result = regHigh.resolveConflicts(testRegions);
+    // when
+    var result = regHigh.resolveConflicts(testRegions);
 
-        //then
-        assertEquals(3, result.size());
-    }
+    // then
+    assertEquals(3, result.size());
+  }
 
-    @Test
-    public void test_resolveConflicts_bearly_no_conflicts() {
-        //given
-        List<HighlightRegion> testRegions = new ArrayList<>();
-        testRegions.add(new HighlightRegion(0, 5, MiniJavaColours.BLOCK_COMMENT_COLOUR));
-        testRegions.add(new HighlightRegion(5, 13, MiniJavaColours.METHODE_COLOUR));
+  @Test
+  public void test_resolveConflicts_bearly_no_conflicts() {
+    // given
+    List<HighlightRegion> testRegions = new ArrayList<>();
+    testRegions.add(new HighlightRegion(0, 5, MiniJavaColours.BLOCK_COMMENT_COLOUR));
+    testRegions.add(new HighlightRegion(5, 13, MiniJavaColours.METHODE_COLOUR));
 
-        //when
-        var result = regHigh.resolveConflicts(testRegions);
+    // when
+    var result = regHigh.resolveConflicts(testRegions);
 
-        //then
-        assertEquals(2, result.size());
-    }
+    // then
+    assertEquals(2, result.size());
+  }
 
-    @Test
-    public void test_resolveConflicts_conflicts_inside() {
-        //given
-        List<HighlightRegion> testRegions = new ArrayList<>();
-        testRegions.add(new HighlightRegion(0, 15, MiniJavaColours.BLOCK_COMMENT_COLOUR));
-        testRegions.add(new HighlightRegion(5, 13, MiniJavaColours.METHODE_COLOUR));
-        testRegions.add(new HighlightRegion(17, 20, MiniJavaColours.CHAR_LITERAL_COLOUR));
+  @Test
+  public void test_resolveConflicts_conflicts_inside() {
+    // given
+    List<HighlightRegion> testRegions = new ArrayList<>();
+    testRegions.add(new HighlightRegion(0, 15, MiniJavaColours.BLOCK_COMMENT_COLOUR));
+    testRegions.add(new HighlightRegion(5, 13, MiniJavaColours.METHODE_COLOUR));
+    testRegions.add(new HighlightRegion(17, 20, MiniJavaColours.CHAR_LITERAL_COLOUR));
 
-        //when
-        var result = regHigh.resolveConflicts(testRegions);
+    // when
+    var result = regHigh.resolveConflicts(testRegions);
 
-        //then
-        assertEquals(2, result.size());
+    // then
+    assertEquals(2, result.size());
+  }
 
-    }
+  @Test
+  public void test_resolveConflicts_conflicts_sameStart() {
+    // given
+    List<HighlightRegion> testRegions = new ArrayList<>();
+    testRegions.add(new HighlightRegion(0, 15, MiniJavaColours.BLOCK_COMMENT_COLOUR));
+    testRegions.add(new HighlightRegion(0, 13, MiniJavaColours.METHODE_COLOUR));
+    testRegions.add(new HighlightRegion(17, 20, MiniJavaColours.CHAR_LITERAL_COLOUR));
 
-    @Test
-    public void test_resolveConflicts_conflicts_sameStart() {
-        //given
-        List<HighlightRegion> testRegions = new ArrayList<>();
-        testRegions.add(new HighlightRegion(0, 15, MiniJavaColours.BLOCK_COMMENT_COLOUR));
-        testRegions.add(new HighlightRegion(0, 13, MiniJavaColours.METHODE_COLOUR));
-        testRegions.add(new HighlightRegion(17, 20, MiniJavaColours.CHAR_LITERAL_COLOUR));
+    // when
+    var result = regHigh.resolveConflicts(testRegions);
 
-        //when
-        var result = regHigh.resolveConflicts(testRegions);
+    // then
+    assertEquals(2, result.size());
+  }
 
-        //then
-        assertEquals(2, result.size());
+  @Test
+  public void test_resolveConflicts_conflicts_outgoing() {
+    // given
+    List<HighlightRegion> testRegions = new ArrayList<>();
+    testRegions.add(new HighlightRegion(0, 8, MiniJavaColours.ANNOTATION_COLOUR));
+    testRegions.add(new HighlightRegion(5, 13, MiniJavaColours.STRING_LITERAL_COLOUR));
 
-    }
+    // when
+    var result = regHigh.resolveConflicts(testRegions);
 
-    @Test
-    public void test_resolveConflicts_conflicts_outgoing() {
-        //given
-        List<HighlightRegion> testRegions = new ArrayList<>();
-        testRegions.add(new HighlightRegion(0, 8, MiniJavaColours.ANNOTATION_COLOUR));
-        testRegions.add(new HighlightRegion(5, 13, MiniJavaColours.STRING_LITERAL_COLOUR));
+    // then
+    assertEquals(1, result.size());
+  }
 
-        //when
-        var result = regHigh.resolveConflicts(testRegions);
+  @Test
+  public void test_resolveConflicts_no_matches() {
+    // given
+    List<HighlightRegion> testRegions = new ArrayList<>();
 
-        //then
-        assertEquals(1, result.size());
-    }
+    // when
+    var result = regHigh.resolveConflicts(testRegions);
 
-    @Test
-    public void test_resolveConflicts_no_matches() {
-        //given
-        List<HighlightRegion> testRegions = new ArrayList<>();
+    // then
+    assertEquals(0, result.size());
+  }
 
-        //when
-        var result = regHigh.resolveConflicts(testRegions);
+  /* Tests for the whole process */
 
-        //then
-        assertEquals(0, result.size());
-    }
+  @Test
+  public void test_regexHighlighter_no_matches() {
+    // given
+    String testString = "abc test xyz";
 
-    /* Tests for the whole process */
+    // when
+    var result = regHigh.computeRegions(testString);
 
-    @Test
-    public void test_regexHighlighter_no_matches() {
-        //given
-        String testString = "abc test xyz";
+    // then
+    assertEquals(0, result.size());
+  }
 
-        //when
-        var result = regHigh.computeRegions(testString);
+  @Test
+  public void test_regexHighlighter_no_conflicts() {
+    // given
+    String testString = "// Line Comment \n  public char 't'";
 
-        //then
-        assertEquals(0, result.size());
-    }
+    // when
+    var result = regHigh.computeRegions(testString);
 
-    @Test
-    public void test_regexHighlighter_no_conflicts() {
-        //given
-        String testString = "// Line Comment \n  public char 't'";
+    // then
+    assertEquals(3, result.size());
+  }
 
-        //when
-        var result = regHigh.computeRegions(testString);
+  @Test
+  public void test_regexHighlighter_conflicts() {
+    // given
+    String testString = "/** public javaDoc comment */ with \" // new Comment in string \"";
 
-        //then
-        assertEquals(3, result.size());
-    }
+    // when
+    var result = regHigh.computeRegions(testString);
 
-    @Test
-    public void test_regexHighlighter_conflicts() {
-        //given
-        String testString = "/** public javaDoc comment */ with \" // new Comment in string \"";
-
-        //when
-        var result = regHigh.computeRegions(testString);
-
-        //then
-        assertEquals(2, result.size());
-    }
+    // then
+    assertEquals(2, result.size());
+  }
 }
