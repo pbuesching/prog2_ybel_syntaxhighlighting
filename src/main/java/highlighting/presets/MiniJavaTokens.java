@@ -18,11 +18,31 @@ public final class MiniJavaTokens {
   // pattern can be selected as the "highlighted" region.
   public static List<Token> defaultTokens() {
     return List.of(
-        // Example: string literals (students should define further tokens below)
-        Token.of(Pattern.compile("\"([^\"\\\\]|\\\\.)*\""), MiniJavaColours.STRING_LITERAL_COLOUR)
-
-        // TODO: Define additional tokens for MiniJava, e.g. character literals, keywords,
-        // annotations, comments, identifiers, numbers, operators, etc.
-        );
+        // Javadoc Comments: 0
+        Token.of(Pattern.compile("/\\*\\*[\\s\\S]*?\\*/"), MiniJavaColours.JAVADOC_COMMENT_COLOUR),
+        // Block Comments: 1
+        Token.of(Pattern.compile("/\\*[\\s\\S]*?\\*/"), MiniJavaColours.BLOCK_COMMENT_COLOUR),
+        // Oneline Comments 2
+        Token.of(Pattern.compile("/{2}[^\\n\\r]*"), MiniJavaColours.LINE_COMMENT_COLOUR),
+        // Escaping operations 3
+        Token.of(Pattern.compile("\\\\[\\\\\"\'ntbrf]"), MiniJavaColours.ESCAPE_SEQUENCE_COLOUR),
+        // Strings 4
+        Token.of(Pattern.compile("\"([^\"\\\\]|\\\\.)*\""), MiniJavaColours.STRING_LITERAL_COLOUR),
+        // Chars 5
+        Token.of(
+            Pattern.compile("'(.|(\\\\[\\\\\"\'ntbrf]))'"), MiniJavaColours.CHAR_LITERAL_COLOUR),
+        // Annotattionen 6
+        Token.of(Pattern.compile("@[\\S\\D][\\w]*"), MiniJavaColours.ANNOTATION_COLOUR),
+        // Keywords (package, import, class, public, private, final, return, null, new) 7
+        Token.of(
+            Pattern.compile(
+                "\\b(package|import|class|public|private|final|return|null|new|static|extends|this)\\b"),
+            MiniJavaColours.KEYWORD_COLOUR),
+        // Methoden 8
+        Token.of(Pattern.compile("[a-zA-Z_$][\\w$]*\\s*?(?=\\()"), MiniJavaColours.METHODE_COLOUR),
+        // Strukturen wie if, else, while... 9
+        Token.of(
+            Pattern.compile("\\b((if|else|while|for|switch)(\\b|(?=\\s?\\()))|(case\\b)"),
+            MiniJavaColours.STRUCTURES_COLOUR));
   }
 }
