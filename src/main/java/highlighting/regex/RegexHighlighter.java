@@ -4,6 +4,7 @@ import highlighting.core.HighlightRegion;
 import highlighting.core.SyntaxHighlighter;
 import highlighting.presets.MiniJavaTokens;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // TODO: Implement a simple regex-based highlighting strategy. Unlike the scanning approach, this
@@ -15,12 +16,16 @@ import java.util.List;
 // the naive regex-based strategy.
 public class RegexHighlighter extends SyntaxHighlighter {
 
-  // TODO: For each token, find all matches of its pattern in the input text, convert them into
+  // Done: For each token, find all matches of its pattern in the input text, convert them into
   // {@code HighlightRegion}s, and combine all of these regions into a single list.
   @Override
   public List<HighlightRegion> collectMatches(String text) {
     List<Token> tokens = MiniJavaTokens.defaultTokens();
-    throw new UnsupportedOperationException("not implemented yet");
+    List<HighlightRegion> regions = new ArrayList<>();
+      for (Token token : tokens) {
+          regions.addAll(token.test(text));
+    }
+    return regions;
   }
 
   // TODO: Resolve overlapping regions. Assume that {@code regions} has been normalised and sorted.
