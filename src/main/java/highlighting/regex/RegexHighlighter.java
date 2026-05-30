@@ -34,6 +34,28 @@ public class RegexHighlighter extends SyntaxHighlighter {
   // position are preferred because of the sorting in {@code normalize}.
   @Override
   public List<HighlightRegion> resolveConflicts(List<HighlightRegion> regions) {
-    throw new UnsupportedOperationException("not implemented yet");
+    List<HighlightRegion> resolvedRegions = new ArrayList<>();
+
+    while (!regions.isEmpty()) {
+        HighlightRegion currentRegion = regions.get(0);
+        if(regions.size() == 1) {
+              /* If there is only one Region (left), put it into the resolved list */
+              resolvedRegions.add(currentRegion);
+              regions.remove(0);
+        } else {
+            /* List is already sorted through normalize(), so the overlapping regions can just be deleted */
+            HighlightRegion nextRegion = regions.get(1);
+            if ((nextRegion.start() >= currentRegion.start()) && (nextRegion.start() < currentRegion.end())) {
+                regions.remove(1);
+            } else {
+                /* If the current region and next region dont Overlap, all conflicts for this region have been handled */
+                resolvedRegions.add(currentRegion);
+                regions.remove(0);
+            }
+        }
+    }
+
+    return resolvedRegions;
+    //throw new UnsupportedOperationException("not implemented yet");
   }
 }
