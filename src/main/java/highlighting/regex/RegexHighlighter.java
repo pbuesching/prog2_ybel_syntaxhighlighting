@@ -2,6 +2,8 @@ package highlighting.regex;
 
 import highlighting.core.HighlightRegion;
 import highlighting.core.SyntaxHighlighter;
+import highlighting.presets.MiniJavaTokens;
+
 import java.util.List;
 
 // TODO: Implement a simple regex-based highlighting strategy. Unlike the scanning approach, this
@@ -17,6 +19,7 @@ public class RegexHighlighter extends SyntaxHighlighter {
   // {@code HighlightRegion}s, and combine all of these regions into a single list.
   @Override
   public List<HighlightRegion> collectMatches(String text) {
+    List<Token> tokens = MiniJavaTokens.defaultTokens();
     throw new UnsupportedOperationException("not implemented yet");
   }
 
