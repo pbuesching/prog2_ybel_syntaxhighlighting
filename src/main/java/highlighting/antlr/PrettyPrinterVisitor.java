@@ -42,12 +42,9 @@ public final class PrettyPrinterVisitor extends MiniJavaBaseVisitor<Void> {
 
   @Override
   public Void visitCompilationUnit(MiniJavaParser.CompilationUnitContext ctx) {
-    // TODO:
-    // Produce a nicely structured compilation unit:
-    // - package declaration (if present),
-    // - import declarations (one per line),
-    // - type declarations (one after another),
-    // with sensible blank lines between these parts.
+
+    visitChildren(ctx);
+
     return null;
   }
 
@@ -58,6 +55,22 @@ public final class PrettyPrinterVisitor extends MiniJavaBaseVisitor<Void> {
     // - opening and closing brace,
     // - one member declaration per line,
     // - members indented relative to the class.
+    writeln("{");
+
+    currentIndent++;
+
+    for (var child : ctx.children) {
+      if (child.getText().equals("{") || child.getText().equals("}")) {
+        continue;
+      }
+      visit(child);
+      nl();
+    }
+
+    currentIndent--;
+
+    writeln("}");
+
     return null;
   }
 
@@ -68,6 +81,22 @@ public final class PrettyPrinterVisitor extends MiniJavaBaseVisitor<Void> {
     // - opening and closing brace,
     // - one blockStatement per line,
     // - nested blocks indented further.
+    writeln("{");
+
+    currentIndent++;
+
+    for (var child : ctx.children) {
+      if (child.getText().equals("{") || child.getText().equals("}")) {
+        continue;
+      }
+      visit(child);
+      nl();
+    }
+
+    currentIndent--;
+
+    writeln("}");
+
     return null;
   }
 
@@ -76,6 +105,10 @@ public final class PrettyPrinterVisitor extends MiniJavaBaseVisitor<Void> {
     // TODO:
     // Ensure that each statement (if/while/return/block/...) ends up
     // on exactly one line, with proper indentation for nested statements.
+    indent();
+    visitChildren(ctx);
+    nl();
+
     return null;
   }
 
