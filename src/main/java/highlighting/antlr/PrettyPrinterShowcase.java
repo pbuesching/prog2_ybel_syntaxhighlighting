@@ -26,6 +26,14 @@ public class PrettyPrinterShowcase {
         }
         """;
 
+    String input2 =
+      """
+      class Test2{
+      boolean a = true;
+      if(a == true){ while(x == 1) {x++;}
+      } }
+      """;
+
     MiniJavaLexer lexer = new MiniJavaLexer(CharStreams.fromString(input));
 
     CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -39,5 +47,20 @@ public class PrettyPrinterShowcase {
     visitor.visit(tree);
 
     System.out.println(visitor.result());
+
+    System.out.println("Test 2:");
+
+    lexer = new MiniJavaLexer(CharStreams.fromString(input2));
+
+    tokens = new CommonTokenStream(lexer);
+
+    parser = new MiniJavaParser(tokens);
+
+    tree = parser.compilationUnit();
+
+    visitor = new PrettyPrinterVisitor(width);
+    visitor.visit(tree);
+    System.out.println(visitor.result());
+
   }
 }

@@ -102,9 +102,6 @@ public final class PrettyPrinterVisitor extends MiniJavaBaseVisitor<Void> {
 
   @Override
   public Void visitStatement(MiniJavaParser.StatementContext ctx) {
-    // TODO:
-    // Ensure that each statement (if/while/return/block/...) ends up
-    // on exactly one line, with proper indentation for nested statements.
     indent();
     visitChildren(ctx);
     nl();
